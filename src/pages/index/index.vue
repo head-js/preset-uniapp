@@ -7,11 +7,14 @@ import {
   type ConnectivityType,
 } from "@/utils/connectivity";
 import { DeviceInfoHelper } from "@/utils/device-info";
+import { PackageInfoHelper } from "@/utils/package-info";
 
 const helper = new ConnectivityHelper();
 const deviceInfoHelper = new DeviceInfoHelper();
+const packageInfoHelper = new PackageInfoHelper();
 const statusText = ref("Network: checking...");
 const localUuid = ref("unknown");
+const packageInfo = packageInfoHelper.getCurrentAppPackageInfo();
 const logs = ref<string[]>([]);
 
 function updateStatus() {
@@ -44,6 +47,9 @@ onUnload(() => {
   <view class="page">
     <text class="status">{{ statusText }}</text>
     <view class="device">
+      <text class="device-row">App Name: {{ packageInfo.appName }}</text>
+      <text class="device-row">App Id: {{ packageInfo.appId }}</text>
+      <text class="device-row">App Version: {{ packageInfo.appVersion }}</text>
       <text class="device-row">LOCAL_UUID: {{ localUuid }}</text>
     </view>
     <scroll-view scroll-y class="logs">

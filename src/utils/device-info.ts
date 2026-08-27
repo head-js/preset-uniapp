@@ -1,6 +1,7 @@
 import uuid4 from 'vanilla.js/random/uuid4';
+import { APP_ID } from './package-info';
 
-const STORAGE_KEY = "com.lisitede.preset.app.LOCAL_UUID";
+const STORAGE_KEY = `${APP_ID}.LOCAL_UUID`;
 
 export interface DeviceInfo {
   localUuid: string;
