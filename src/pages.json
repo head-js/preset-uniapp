@@ -5,6 +5,12 @@
 			"style": {
 				"navigationBarTitleText": "Preset Uniapp"
 			}
+		},
+		{
+			"path": "pages/webview/index",
+			"style": {
+				"navigationBarTitleText": "WebView"
+			}
 		}
 	],
 	"globalStyle": {

@@ -29,6 +29,13 @@ function appendLog(message: string) {
   logs.value.unshift(message);
 }
 
+function openWebView() {
+  const target = "https://uniapp.dcloud.net.cn/";
+  uni.navigateTo({
+    url: `/pages/webview/index?url=${encodeURIComponent(target)}`,
+  });
+}
+
 onLoad(() => {
   updateDeviceInfo();
   helper.registerCallback((type: ConnectivityType) => {
@@ -52,6 +59,9 @@ onUnload(() => {
       <text class="device-row">App Version: {{ packageInfo.appVersion }}</text>
       <text class="device-row">LOCAL_UUID: {{ localUuid }}</text>
     </view>
+    <button class="webview-btn" type="primary" @click="openWebView">
+      Open WebView
+    </button>
     <scroll-view scroll-y class="logs">
       <view v-for="(log, index) in logs" :key="index" class="log-item">
         <text class="log-text">{{ log }}</text>
@@ -75,6 +85,10 @@ onUnload(() => {
 
 .device {
   padding: 16rpx 32rpx;
+}
+
+.webview-btn {
+  margin: 16rpx 32rpx;
 }
 
 .device-row {
