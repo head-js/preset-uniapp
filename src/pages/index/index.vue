@@ -6,13 +6,20 @@ import {
   connectivityLabel,
   type ConnectivityType,
 } from "@/utils/connectivity";
+import { DeviceInfoHelper } from "@/utils/device-info";
 
 const helper = new ConnectivityHelper();
+const deviceInfoHelper = new DeviceInfoHelper();
 const statusText = ref("Network: checking...");
+const localUuid = ref("unknown");
 const logs = ref<string[]>([]);
 
 function updateStatus() {
   statusText.value = `Network: ${connectivityLabel(helper.getCurrentConnectivity())}`;
+}
+
+function updateDeviceInfo() {
+  localUuid.value = deviceInfoHelper.getCurrentDeviceInfo().localUuid;
 }
 
 function appendLog(message: string) {
@@ -20,6 +27,7 @@ function appendLog(message: string) {
 }
 
 onLoad(() => {
+  updateDeviceInfo();
   helper.registerCallback((type: ConnectivityType) => {
     appendLog(`Network changed: ${connectivityLabel(type)}`);
     updateStatus();
@@ -35,6 +43,9 @@ onUnload(() => {
 <template>
   <view class="page">
     <text class="status">{{ statusText }}</text>
+    <view class="device">
+      <text class="device-row">LOCAL_UUID: {{ localUuid }}</text>
+    </view>
     <scroll-view scroll-y class="logs">
       <view v-for="(log, index) in logs" :key="index" class="log-item">
         <text class="log-text">{{ log }}</text>
@@ -54,6 +65,14 @@ onUnload(() => {
   font-size: 48rpx;
   font-weight: 500;
   padding: 32rpx 32rpx 16rpx;
+}
+
+.device {
+  padding: 16rpx 32rpx;
+}
+
+.device-row {
+  font-size: 32rpx;
 }
 
 .logs {

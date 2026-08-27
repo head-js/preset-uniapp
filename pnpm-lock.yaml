@@ -48,6 +48,9 @@ importers:
       typescript:
         specifier: 5.9.2
         version: 5.9.2
+      vanilla.js:
+        specifier: 0.3.0
+        version: 0.3.0
       vite:
         specifier: 5.2.8
         version: 5.2.8(terser@5.50.0)
@@ -2269,6 +2272,9 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+
+  vanilla.js@0.3.0:
+    resolution: {integrity: sha512-KB6tqPlmHHQMMYLzAXw1rGbPAbv/gUh2d/5yacTy4XQG7Ydo84DDqInOXMl0TFFQRUSnNDs0AMlVquOkhDAO+g==}
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -5095,6 +5101,8 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   utils-merge@1.0.1: {}
+
+  vanilla.js@0.3.0: {}
 
   vary@1.1.2: {}
 

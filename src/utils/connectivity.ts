@@ -43,7 +43,7 @@ function mapNetworkType(networkType: string): ConnectivityType {
 export class ConnectivityHelper {
   private currentConnectivity: ConnectivityType = ConnectivityType.Unknown;
 
-  private handler: ((res: UniApp.OnNetworkStatusChangeCallbackResult) => void) | null =
+  private handler: ((res: UniNamespace.OnNetworkStatusChangeSuccess) => void) | null =
     null;
 
   getCurrentConnectivity(): ConnectivityType {
