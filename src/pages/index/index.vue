@@ -8,6 +8,7 @@ import {
 } from "@/utils/connectivity";
 import { DeviceInfoHelper } from "@/utils/device-info";
 import { PackageInfoHelper } from "@/utils/package-info";
+import { apiClient } from "@/utils/api-client";
 
 const helper = new ConnectivityHelper();
 const deviceInfoHelper = new DeviceInfoHelper();
@@ -36,6 +37,29 @@ function openWebView() {
   });
 }
 
+const httpLoading = ref(false);
+const httpResult = ref("N/A");
+
+async function sendHttpPost() {
+  if (httpLoading.value) {
+    return;
+  }
+  httpLoading.value = true;
+  httpResult.value = "Sending...";
+  try {
+    const response = await apiClient.postTest({ platform: "mp-weixin" });
+    const echoed = response.json ?? {};
+    httpResult.value = `POST ok: ${JSON.stringify(echoed)}`;
+    appendLog(`HTTP POST ok: ${response.url ?? ""}`);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    httpResult.value = `POST failed: ${message}`;
+    appendLog(`HTTP POST failed: ${message}`);
+  } finally {
+    httpLoading.value = false;
+  }
+}
+
 onLoad(() => {
   updateDeviceInfo();
   helper.registerCallback((type: ConnectivityType) => {
@@ -62,6 +86,17 @@ onUnload(() => {
     <button class="webview-btn" type="primary" @click="openWebView">
       Open WebView
     </button>
+    <button
+      class="webview-btn"
+      type="primary"
+      :disabled="httpLoading"
+      @click="sendHttpPost"
+    >
+      {{ httpLoading ? "Sending..." : "Send POST" }}
+    </button>
+    <view class="device">
+      <text class="device-row">Result: {{ httpResult }}</text>
+    </view>
     <scroll-view scroll-y class="logs">
       <view v-for="(log, index) in logs" :key="index" class="log-item">
         <text class="log-text">{{ log }}</text>
