@@ -1,6 +1,7 @@
-type TabKey = "home" | "detail" | "profile";
+type TabKey = "home" | "detail" | "profile" | "plan" | "phase";
 
 interface CustomTabBarInstance {
+  syncRoute?(route: string): void;
   setData(data: { selectedKey: TabKey }): void;
 }
 
@@ -13,6 +14,8 @@ const routeToTabKey: Record<string, TabKey> = {
   "pages/index/index": "home",
   "pages/detail/index": "detail",
   "pages/profile/index": "profile",
+  "pages/plan/index": "plan",
+  "pages/phase/index": "phase",
 };
 
 export function syncCustomTabBar() {
@@ -22,7 +25,12 @@ export function syncCustomTabBar() {
     ? routeToTabKey[currentPage.route]
     : undefined;
 
-  if (selectedKey) {
-    currentPage.getTabBar?.()?.setData({ selectedKey });
+  const tabBar = currentPage.getTabBar?.();
+  if (selectedKey && tabBar) {
+    if (tabBar.syncRoute && currentPage.route) {
+      tabBar.syncRoute(currentPage.route);
+    } else {
+      tabBar.setData({ selectedKey });
+    }
   }
 }

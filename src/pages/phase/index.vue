@@ -5,19 +5,12 @@ import { syncCustomTabBar } from "@/utils/custom-tab-bar";
 onShow(() => {
   syncCustomTabBar();
 });
-
-function openPlan() {
-  uni.switchTab({ url: "/pages/plan/index" });
-}
 </script>
 
 <template>
   <view class="page">
-    <text class="title">Profile</text>
-    <text class="description">This is the application profile page.</text>
-    <button class="action-btn" @click="openPlan">
-      Open Plan
-    </button>
+    <text class="title">Phase</text>
+    <text class="description">This is the secondary Phase page.</text>
   </view>
 </template>
 
@@ -42,9 +35,5 @@ function openPlan() {
   color: #646a73;
   font-size: 30rpx;
   line-height: 1.6;
-}
-
-.action-btn {
-  margin: 40rpx 0 0;
 }
 </style>

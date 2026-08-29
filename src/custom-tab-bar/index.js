@@ -24,7 +24,48 @@ const TAB_ITEMS = {
     iconPath: "/static/tabbar/profile.png",
     selectedIconPath: "/static/tabbar/profile-selected.png",
   },
+  plan: {
+    key: "plan",
+    text: "Plan",
+    iconPath: "/static/tabbar/plan.png",
+    selectedIconPath: "/static/tabbar/plan-selected.png",
+  },
+  phase: {
+    key: "phase",
+    text: "Phase",
+    iconPath: "/static/tabbar/phase.png",
+    selectedIconPath: "/static/tabbar/phase-selected.png",
+  },
 };
+
+const PRIMARY_ITEMS = [
+  TAB_ITEMS.home,
+  TAB_ITEMS.detail,
+  TAB_ITEMS.webview,
+  TAB_ITEMS.profile,
+];
+
+const PRIMARY_LOADING_ITEMS = [TAB_ITEMS.home, TAB_ITEMS.profile];
+const SECONDARY_ITEMS = [TAB_ITEMS.plan, TAB_ITEMS.phase];
+
+const ROUTE_TO_TAB_KEY = {
+  "pages/index/index": "home",
+  "pages/detail/index": "detail",
+  "pages/profile/index": "profile",
+  "pages/plan/index": "plan",
+  "pages/phase/index": "phase",
+};
+
+function getCurrentRoute() {
+  const pages = getCurrentPages();
+  return pages[pages.length - 1]?.route;
+}
+
+function getScreenKey(route) {
+  return route === "pages/plan/index" || route === "pages/phase/index"
+    ? "secondary"
+    : "primary";
+}
 
 function mockFetchTabItems() {
   let timer;
@@ -45,14 +86,16 @@ function mockFetchTabItems() {
 Component({
   data: {
     selectedKey: "home",
+    screenKey: "primary",
     navigating: false,
     color: "#7A7E83",
     selectedColor: "#007AFF",
-    items: [TAB_ITEMS.home, TAB_ITEMS.profile],
+    items: PRIMARY_LOADING_ITEMS,
   },
 
   lifetimes: {
     attached() {
+      this.syncRoute(getCurrentRoute());
       this.loadItems();
     },
 
@@ -76,8 +119,27 @@ Component({
       const items = await request.promise;
       this.mockFetchTimer = undefined;
       if (!this.detachedState) {
-        this.setData({ items });
+        this.configLoaded = true;
+        if (this.data.screenKey === "primary") {
+          this.setData({ items });
+        }
       }
+    },
+
+    syncRoute(route) {
+      const selectedKey = route ? ROUTE_TO_TAB_KEY[route] : undefined;
+      const screenKey = getScreenKey(route);
+      const items = screenKey === "secondary"
+        ? SECONDARY_ITEMS
+        : this.configLoaded
+          ? PRIMARY_ITEMS
+          : PRIMARY_LOADING_ITEMS;
+
+      this.setData({
+        screenKey,
+        items,
+        ...(selectedKey ? { selectedKey } : {}),
+      });
     },
 
     handleTap(event) {
@@ -98,6 +160,8 @@ Component({
         home: "/pages/index/index",
         detail: "/pages/detail/index",
         profile: "/pages/profile/index",
+        plan: "/pages/plan/index",
+        phase: "/pages/phase/index",
       };
       const url = tabRoutes[key];
 

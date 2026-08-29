@@ -6,17 +6,17 @@ onShow(() => {
   syncCustomTabBar();
 });
 
-function openPlan() {
-  uni.switchTab({ url: "/pages/plan/index" });
+function backToProfile() {
+  uni.switchTab({ url: "/pages/profile/index" });
 }
 </script>
 
 <template>
   <view class="page">
-    <text class="title">Profile</text>
-    <text class="description">This is the application profile page.</text>
-    <button class="action-btn" @click="openPlan">
-      Open Plan
+    <text class="title">Plan</text>
+    <text class="description">This is the secondary Plan page.</text>
+    <button class="action-btn" @click="backToProfile">
+      Back to Profile
     </button>
   </view>
 </template>

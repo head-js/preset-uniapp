@@ -23,6 +23,18 @@
 			"style": {
 				"navigationBarTitleText": "Profile"
 			}
+		},
+		{
+			"path": "pages/plan/index",
+			"style": {
+				"navigationBarTitleText": "Plan"
+			}
+		},
+		{
+			"path": "pages/phase/index",
+			"style": {
+				"navigationBarTitleText": "Phase"
+			}
 		}
 	],
 	"tabBar": {
@@ -48,6 +60,18 @@
 				"text": "Profile",
 				"iconPath": "static/tabbar/profile.png",
 				"selectedIconPath": "static/tabbar/profile-selected.png"
+			},
+			{
+				"pagePath": "pages/plan/index",
+				"text": "Plan",
+				"iconPath": "static/tabbar/plan.png",
+				"selectedIconPath": "static/tabbar/plan-selected.png"
+			},
+			{
+				"pagePath": "pages/phase/index",
+				"text": "Phase",
+				"iconPath": "static/tabbar/phase.png",
+				"selectedIconPath": "static/tabbar/phase-selected.png"
 			}
 		]
 	},
