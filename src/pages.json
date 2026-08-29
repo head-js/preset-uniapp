@@ -7,12 +7,50 @@
 			}
 		},
 		{
+			"path": "pages/detail/index",
+			"style": {
+				"navigationBarTitleText": "Detail"
+			}
+		},
+		{
 			"path": "pages/webview/index",
 			"style": {
 				"navigationBarTitleText": "WebView"
 			}
+		},
+		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "Profile"
+			}
 		}
 	],
+	"tabBar": {
+		"custom": true,
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"backgroundColor": "#FFFFFF",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "Home",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-selected.png"
+			},
+			{
+				"pagePath": "pages/detail/index",
+				"text": "Detail",
+				"iconPath": "static/tabbar/detail.png",
+				"selectedIconPath": "static/tabbar/detail-selected.png"
+			},
+			{
+				"pagePath": "pages/profile/index",
+				"text": "Profile",
+				"iconPath": "static/tabbar/profile.png",
+				"selectedIconPath": "static/tabbar/profile-selected.png"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "Preset Uniapp",

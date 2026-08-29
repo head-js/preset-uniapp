@@ -17,9 +17,6 @@ importers:
       '@dcloudio/uni-components':
         specifier: 3.0.0-4040520250104002
         version: 3.0.0-4040520250104002(postcss@8.5.26)(rollup@4.46.2)(vue@3.5.18(typescript@5.9.2))
-      '@dcloudio/uni-h5':
-        specifier: 3.0.0-4040520250104002
-        version: 3.0.0-4040520250104002(postcss@8.5.26)(rollup@4.46.2)(vue@3.5.18(typescript@5.9.2))
       '@dcloudio/uni-mp-weixin':
         specifier: 3.0.0-4040520250104002
         version: 3.0.0-4040520250104002(postcss@8.5.26)(rollup@4.46.2)(vue@3.5.18(typescript@5.9.2))

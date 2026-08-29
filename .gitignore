@@ -141,3 +141,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# WeChat DevTools local project files
+project.config.json
+project.private.config.json

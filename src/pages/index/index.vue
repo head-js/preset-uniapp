@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { onLoad, onUnload } from "@dcloudio/uni-app";
+import { onLoad, onShow, onUnload } from "@dcloudio/uni-app";
 import {
   ConnectivityHelper,
   connectivityLabel,
@@ -9,6 +9,7 @@ import {
 import { DeviceInfoHelper } from "@/utils/device-info";
 import { PackageInfoHelper } from "@/utils/package-info";
 import { apiClient } from "@/utils/api-client";
+import { syncCustomTabBar } from "@/utils/custom-tab-bar";
 
 const helper = new ConnectivityHelper();
 const deviceInfoHelper = new DeviceInfoHelper();
@@ -28,13 +29,6 @@ function updateDeviceInfo() {
 
 function appendLog(message: string) {
   logs.value.unshift(message);
-}
-
-function openWebView() {
-  const target = "https://uniapp.dcloud.net.cn/";
-  uni.navigateTo({
-    url: `/pages/webview/index?url=${encodeURIComponent(target)}`,
-  });
 }
 
 const httpLoading = ref(false);
@@ -69,6 +63,10 @@ onLoad(() => {
   updateStatus();
 });
 
+onShow(() => {
+  syncCustomTabBar();
+});
+
 onUnload(() => {
   helper.unregisterCallback();
 });
@@ -83,11 +81,8 @@ onUnload(() => {
       <text class="device-row">App Version: {{ packageInfo.appVersion }}</text>
       <text class="device-row">LOCAL_UUID: {{ localUuid }}</text>
     </view>
-    <button class="webview-btn" type="primary" @click="openWebView">
-      Open WebView
-    </button>
     <button
-      class="webview-btn"
+      class="action-btn"
       type="primary"
       :disabled="httpLoading"
       @click="sendHttpPost"
@@ -107,9 +102,11 @@ onUnload(() => {
 
 <style>
 .page {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - var(--window-top, 0px));
+  padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
 }
 
 .status {
@@ -122,7 +119,7 @@ onUnload(() => {
   padding: 16rpx 32rpx;
 }
 
-.webview-btn {
+.action-btn {
   margin: 16rpx 32rpx;
 }
 

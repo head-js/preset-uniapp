@@ -1,0 +1,24 @@
+<cover-view class="tab-bar">
+  <cover-view class="tab-bar__border"></cover-view>
+  <cover-view class="tab-bar__content">
+    <cover-view
+      wx:for="{{items}}"
+      wx:key="key"
+      class="tab-bar__item"
+      data-key="{{item.key}}"
+      bindtap="handleTap"
+    >
+      <cover-image
+        class="tab-bar__icon"
+        src="{{selectedKey === item.key ? item.selectedIconPath : item.iconPath}}"
+      ></cover-image>
+      <cover-view
+        wx:if="{{item.text}}"
+        class="tab-bar__label"
+        style="color: {{selectedKey === item.key ? selectedColor : color}}"
+      >
+        {{item.text}}
+      </cover-view>
+    </cover-view>
+  </cover-view>
+</cover-view>

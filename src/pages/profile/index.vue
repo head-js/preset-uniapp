@@ -1,0 +1,39 @@
+<script setup lang="ts">
+import { onShow } from "@dcloudio/uni-app";
+import { syncCustomTabBar } from "@/utils/custom-tab-bar";
+
+onShow(() => {
+  syncCustomTabBar();
+});
+</script>
+
+<template>
+  <view class="page">
+    <text class="title">Profile</text>
+    <text class="description">This is the application profile page.</text>
+  </view>
+</template>
+
+<style>
+.page {
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--window-top, 0px));
+  padding: 48rpx 32rpx calc(140rpx + env(safe-area-inset-bottom));
+  background: #f8f8f8;
+}
+
+.title {
+  display: block;
+  color: #1f2329;
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.description {
+  display: block;
+  margin-top: 20rpx;
+  color: #646a73;
+  font-size: 30rpx;
+  line-height: 1.6;
+}
+</style>
