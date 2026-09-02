@@ -6,7 +6,7 @@ import {
   connectivityLabel,
   type ConnectivityType,
 } from "@/utils/connectivity";
-import { DeviceInfoHelper } from "@/utils/device-info";
+import { DeviceInfoHelper } from "~device-info";
 import { PackageInfoHelper } from "@/utils/package-info";
 import { apiClient } from "@/utils/api-client";
 import { syncCustomTabBar } from "@/utils/custom-tab-bar";
