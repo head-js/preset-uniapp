@@ -6,25 +6,20 @@ import {
   connectivityLabel,
   type ConnectivityType,
 } from "@/utils/connectivity";
-import { DeviceInfoHelper } from "~device-info";
 import { PackageInfoHelper } from "@/utils/package-info";
 import { apiClient } from "@/utils/api-client";
 import { syncCustomTabBar } from "@/utils/custom-tab-bar";
+import { useSplashStore } from "@/stores/splash";
 
 const helper = new ConnectivityHelper();
-const deviceInfoHelper = new DeviceInfoHelper();
 const packageInfoHelper = new PackageInfoHelper();
 const statusText = ref("Network: checking...");
-const localUuid = ref("unknown");
 const packageInfo = packageInfoHelper.getCurrentAppPackageInfo();
 const logs = ref<string[]>([]);
+const splashStore = useSplashStore();
 
 function updateStatus() {
   statusText.value = `Network: ${connectivityLabel(helper.getCurrentConnectivity())}`;
-}
-
-function updateDeviceInfo() {
-  localUuid.value = deviceInfoHelper.getCurrentDeviceInfo().localUuid;
 }
 
 function appendLog(message: string) {
@@ -55,7 +50,6 @@ async function sendHttpPost() {
 }
 
 onLoad(() => {
-  updateDeviceInfo();
   helper.registerCallback((type: ConnectivityType) => {
     appendLog(`Network changed: ${connectivityLabel(type)}`);
     updateStatus();
@@ -64,6 +58,7 @@ onLoad(() => {
 });
 
 onShow(() => {
+  void splashStore.initialize().catch(() => undefined);
   syncCustomTabBar();
 });
 
@@ -74,29 +69,41 @@ onUnload(() => {
 
 <template>
   <view class="page">
-    <text class="status">{{ statusText }}</text>
-    <view class="device">
-      <text class="device-row">App Name: {{ packageInfo.appName }}</text>
-      <text class="device-row">App Id: {{ packageInfo.appId }}</text>
-      <text class="device-row">App Version: {{ packageInfo.appVersion }}</text>
-      <text class="device-row">LOCAL_UUID: {{ localUuid }}</text>
-    </view>
-    <button
-      class="action-btn"
-      type="primary"
-      :disabled="httpLoading"
-      @click="sendHttpPost"
+    <view
+      v-if="splashStore.phase === 'idle' || splashStore.phase === 'initializing'"
+      class="splash-panel"
     >
-      {{ httpLoading ? "Sending..." : "Send POST" }}
-    </button>
-    <view class="device">
-      <text class="device-row">Result: {{ httpResult }}</text>
+      <text class="splash-title">首页骨架屏</text>
     </view>
-    <scroll-view scroll-y class="logs">
-      <view v-for="(log, index) in logs" :key="index" class="log-item">
-        <text class="log-text">{{ log }}</text>
+    <view v-else-if="splashStore.phase === 'error'" class="splash-panel">
+      <text class="splash-title">Initialization failed</text>
+      <text class="splash-copy">{{ splashStore.errorMessage }}</text>
+      <button class="splash-button" @click="splashStore.retry">Retry</button>
+    </view>
+    <view v-else>
+      <text class="status">{{ statusText }}</text>
+      <view class="device">
+        <text class="device-row">App Name: {{ packageInfo.appName }}</text>
+        <text class="device-row">App Id: {{ packageInfo.appId }}</text>
+        <text class="device-row">App Version: {{ packageInfo.appVersion }}</text>
+        <text class="device-row">LOCAL_UUID: {{ splashStore.localUuid || "pending" }}</text>
       </view>
-    </scroll-view>
+      <button
+        class="action-btn"
+        :disabled="httpLoading"
+        @click="sendHttpPost"
+      >
+        {{ httpLoading ? "Sending..." : "Send POST" }}
+      </button>
+      <view class="device">
+        <text class="device-row">Result: {{ httpResult }}</text>
+      </view>
+      <scroll-view scroll-y class="logs">
+        <view v-for="(log, index) in logs" :key="index" class="log-item">
+          <text class="log-text">{{ log }}</text>
+        </view>
+      </scroll-view>
+    </view>
   </view>
 </template>
 
@@ -107,6 +114,28 @@ onUnload(() => {
   flex-direction: column;
   min-height: calc(100vh - var(--window-top, 0px));
   padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
+}
+
+.splash-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--window-top, 0px));
+  padding: 64rpx;
+}
+
+.splash-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  margin-bottom: 24rpx;
+}
+
+.splash-copy {
+  color: #666;
+  font-size: 30rpx;
+  line-height: 1.6;
+  margin-bottom: 40rpx;
 }
 
 .status {
@@ -120,6 +149,8 @@ onUnload(() => {
 }
 
 .action-btn {
+  background-color: #007aff;
+  color: #fff;
   margin: 16rpx 32rpx;
 }
 
